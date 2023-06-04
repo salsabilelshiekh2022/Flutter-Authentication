@@ -9,7 +9,7 @@ Route<dynamic> onGenerate(RouteSettings settings) {
   switch (settings.name) {
     case AppRoutes.loginPageRoute:
       return CupertinoPageRoute(
-          builder: (_) => LoginPage(), settings: settings);
+          builder: (_) => const LoginPage(), settings: settings);
     case AppRoutes.registerPageRoute:
       return CupertinoPageRoute(
           builder: (_) => const RegisterPage(), settings: settings);
@@ -22,6 +22,6 @@ Route<dynamic> onGenerate(RouteSettings settings) {
 
     default:
       return CupertinoPageRoute(
-          builder: (_) => LoginPage(), settings: settings);
+          builder: (_) => const LoginPage(), settings: settings);
   }
 }

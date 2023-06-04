@@ -4,15 +4,9 @@ import 'package:ecommerce_application/views/login/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../widgets/app_loading_button.dart';
-
-//import 'package:fluttertoast/fluttertoast.dart';
-
-//import '../../constants.dart' as constants;
 import '../../constants.dart';
 import '../../core/functions/navigation.dart';
-//import '../../core/functions/showSnacBar.dart';
 import '../../core/functions/validator.dart';
-//import '../../core/utils/casheData/casheData.dart';
 import '../../core/router/routes.dart';
 import '../../widgets/app_button.dart';
 import '../../widgets/social_media_button.dart';
@@ -20,10 +14,8 @@ import '../../widgets/app_text_form_field.dart';
 import '../../widgets/app_text.dart';
 
 class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
-  final GlobalKey<FormState> formKey = GlobalKey();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  const LoginPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     final height = getHeight(context);
@@ -31,18 +23,6 @@ class LoginPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => LoginCubit(),
       child: Builder(
-        // listener: (context, state) {
-        //   if (state is LoginSuccessState) {
-        //     if (state.user.status) {
-        //       CasheData.setData(key: 'token', value: state.user.data!.token);
-
-        //       //Navigation.pushAndRemove(context, AppRoutes.homePageRoute);
-        //       Navigator.of(context).pushNamed(AppRoutes.homePageRoute);
-        //     } else {
-        //       showSnacBar2(context, state.user.message, constants.error);
-        //     }
-        //   }
-        // },
         builder: (context) {
           final cubit = LoginCubit.of(context);
           return Scaffold(
