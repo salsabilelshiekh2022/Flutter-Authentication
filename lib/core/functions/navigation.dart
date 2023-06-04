@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/scheduler.dart';
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class Navigation {
+  static BuildContext context = navigatorKey.currentContext!;
   static Future<dynamic> pushNamed(BuildContext context, String routeName,
       {Map<String, dynamic>? arguments}) async {
     Navigator.of(context).pushNamed(routeName, arguments: arguments);
@@ -11,13 +13,11 @@ class Navigation {
     Navigator.of(context).pop();
   }
 
-  static Future<dynamic> pushAndRemove(BuildContext context, String routeName,
+  static Future<dynamic> navigateAndPopAll(String routeName,
       {RouteSettings? settings}) async {
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      Navigator.of(context).pushNamedAndRemoveUntil(
-        routeName,
-        (Route<dynamic> route) => false,
-      );
-    });
+    navigatorKey.currentState!.pushNamedAndRemoveUntil(
+      routeName,
+      (_) => false,
+    );
   }
 }

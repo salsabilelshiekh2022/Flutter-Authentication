@@ -1,4 +1,4 @@
-import '../../../models/user.dart';
+import '../../core/api_services/user_model.dart';
 
 abstract class LoginStates {}
 

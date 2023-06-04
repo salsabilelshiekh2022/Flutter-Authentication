@@ -1,9 +1,9 @@
 import 'package:ecommerce_application/core/functions/navigation.dart';
-import 'package:ecommerce_application/core/utils/casheData/casheData.dart';
-import 'package:ecommerce_application/core/utils/routes.dart';
+import 'package:ecommerce_application/core/casheData/casheData.dart';
+import 'package:ecommerce_application/core/router/routes.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/app_button.dart';
+import '../../widgets/app_button.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
           title: 'SIGN OUT',
           onTap: () async {
             await CasheData.removeItem(key: 'token').then((value) {
-              Navigation.pushAndRemove(context, AppRoutes.registerPageRoute);
+              Navigation.navigateAndPopAll(AppRoutes.registerPageRoute);
               setState(() {});
             });
           },

@@ -1,7 +1,7 @@
-import 'package:ecommerce_application/views/widgets/app_text.dart';
+import 'package:ecommerce_application/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 
-import '../../constants.dart' as constants;
+import '../constants.dart' as constants;
 
 class CustomButton extends StatelessWidget {
   const CustomButton({super.key, this.onTap, required this.title});

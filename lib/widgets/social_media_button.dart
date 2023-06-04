@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_svg/svg.dart';
-import '../../constants.dart' as constants;
+import '../constants.dart' as constants;
 
 class SocialMediaButton extends StatelessWidget {
   const SocialMediaButton({super.key, required this.imagePath});

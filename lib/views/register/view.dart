@@ -1,49 +1,32 @@
 import 'dart:core';
 
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:ecommerce_application/views/widgets/app_text.dart';
+import 'package:ecommerce_application/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constants.dart';
 import '../../core/functions/navigation.dart';
-import '../../core/functions/showSnacBar.dart';
 import '../../core/functions/validator.dart';
-import '../../core/utils/casheData/casheData.dart';
-import '../../core/utils/routes.dart';
-import '../widgets/app_button.dart';
-import '../widgets/social_media_button.dart';
-import '../widgets/app_text_form_field.dart';
-import 'cubit/register_cubit.dart';
-import 'cubit/register_states.dart';
-import '../../constants.dart' as constants;
-import '../widgets/app_loading_button.dart';
+import '../../core/router/routes.dart';
+import '../../widgets/app_button.dart';
+import '../../widgets/social_media_button.dart';
+import '../../widgets/app_text_form_field.dart';
+import 'cubit.dart';
+import 'states.dart';
+import '../../widgets/app_loading_button.dart';
 
 class RegisterPage extends StatelessWidget {
-  RegisterPage({super.key});
-  final GlobalKey<FormState> formKey = GlobalKey();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
+  const RegisterPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     final height = getHeight(context);
 
     return BlocProvider(
       create: (BuildContext context) => RegisterCubit(),
-      child: BlocConsumer<RegisterCubit, RegisterStates>(
-          listener: (context, state) {
-        if (state is RegisterSuccessState) {
-          if (state.user.status) {
-            CasheData.setData(key: 'token', value: state.user.data!.token);
-            debugPrint('save');
-            Navigation.pushAndRemove(context, AppRoutes.homePageRoute);
-          } else {
-            showSnacBar(context, state.user.message, constants.error);
-          }
-        }
-      }, builder: (context, state) {
+      child: Builder(builder: (context) {
+        final cubit = RegisterCubit.of(context);
         return Scaffold(
           body: SafeArea(
             child: Padding(
@@ -54,7 +37,7 @@ class RegisterPage extends StatelessWidget {
                   bottom: height * .0418),
               child: SingleChildScrollView(
                 child: Form(
-                  key: formKey,
+                  key: cubit.formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -67,7 +50,9 @@ class RegisterPage extends StatelessWidget {
                         height: height * .0899,
                       ),
                       CustomTextFormField(
-                          controller: nameController,
+                          onSave: (data) {
+                            cubit.name = data;
+                          },
                           hintText: 'Name',
                           validator: (value) {
                             return Validator.validateName(value);
@@ -76,13 +61,17 @@ class RegisterPage extends StatelessWidget {
                         height: 8,
                       ),
                       CustomTextFormField(
-                          controller: phoneController,
+                          onSave: (data) {
+                            cubit.phone = data;
+                          },
                           hintText: 'Phone',
                           validator: (value) {
                             return Validator.validatePhone(value);
                           }),
                       CustomTextFormField(
-                          controller: emailController,
+                          onSave: (data) {
+                            cubit.email = data;
+                          },
                           hintText: 'Email',
                           validator: (value) {
                             return Validator.validateEmail(value);
@@ -91,7 +80,9 @@ class RegisterPage extends StatelessWidget {
                         height: 8,
                       ),
                       CustomTextFormField(
-                          controller: passwordController,
+                          onSave: (data) {
+                            cubit.password = data;
+                          },
                           hintText: 'Password',
                           validator: (value) {
                             return Validator.validatePassword(value);
@@ -114,28 +105,19 @@ class RegisterPage extends StatelessWidget {
                       SizedBox(
                         height: height * .034482,
                       ),
-                      ConditionalBuilder(
-                        condition: state is! RegisterLoadingState,
-                        builder: (context) => CustomButton(
-                          title: 'SIGNUP',
-                          onTap: () {
-                            if (formKey.currentState!.validate()) {
-                              try {
-                                formKey.currentState!.save();
-                                BlocProvider.of<RegisterCubit>(context)
-                                    .userRegister(
-                                        email: emailController.text,
-                                        password: passwordController.text,
-                                        name: nameController.text,
-                                        phone: phoneController.text);
-                              } catch (e) {
-                                debugPrint('error is ${e.toString()}');
-                              }
-                            }
-                          },
-                        ),
-                        fallback: (context) => const AppLoadingButton(),
-                      ),
+                      BlocBuilder(
+                          bloc: cubit,
+                          builder: (context, state) {
+                            return ConditionalBuilder(
+                              condition: state is! RegisterLoadingState,
+                              builder: (context) => CustomButton(
+                                  title: 'SIGNUP',
+                                  onTap: () {
+                                    cubit.register();
+                                  }),
+                              fallback: (context) => const AppLoadingButton(),
+                            );
+                          }),
                       SizedBox(
                         height: height * .085,
                       ),

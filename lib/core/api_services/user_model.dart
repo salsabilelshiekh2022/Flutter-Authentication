@@ -1,4 +1,4 @@
-import 'package:ecommerce_application/models/user_data.dart';
+import 'package:ecommerce_application/core/api_services/user_data_model.dart';
 
 class User {
   final bool status;

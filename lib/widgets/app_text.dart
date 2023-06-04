@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../constants.dart' as constants;
+import '../constants.dart' as constants;
 
 class TextApp extends StatelessWidget {
   const TextApp(

@@ -1,11 +1,13 @@
-import 'package:ecommerce_application/core/utils/router.dart';
-import 'package:ecommerce_application/core/utils/routes.dart';
-import 'package:ecommerce_application/views/login/cubit/login_cubit.dart';
+import 'package:ecommerce_application/core/router/router.dart';
+import 'package:ecommerce_application/core/router/routes.dart';
+import 'package:ecommerce_application/views/login/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'constants.dart' as constants;
-import 'core/utils/casheData/casheData.dart';
+import 'core/functions/navigation.dart';
+import 'core/functions/showSnacBar.dart';
+import 'core/casheData/casheData.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,6 +25,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'E-commerce App',
+        scaffoldMessengerKey: scaffoldKey,
+        navigatorKey: navigatorKey,
         theme: ThemeData(
           fontFamily: "Metropolis",
           appBarTheme: const AppBarTheme(

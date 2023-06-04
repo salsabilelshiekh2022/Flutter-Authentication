@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import '../../constants.dart';
 import '../../core/functions/navigation.dart';
 import '../../core/functions/validator.dart';
-import '../widgets/app_button.dart';
-import '../widgets/app_text_form_field.dart';
-import '../widgets/app_text.dart';
+import '../../widgets/app_button.dart';
+import '../../widgets/app_text_form_field.dart';
+import '../../widgets/app_text.dart';
 
 class ForgetPasswordPage extends StatelessWidget {
   ForgetPasswordPage({super.key});

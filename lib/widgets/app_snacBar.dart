@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../login/cubit/login_states.dart';
+import '../views/login/states.dart';
 
 class AppSnacBar extends StatelessWidget {
   const AppSnacBar({super.key, required this.state, required this.color});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../constants.dart' as constants;
-import '../../core/functions/input_border.dart';
+import '../constants.dart' as constants;
+import '../core/functions/input_border.dart';
 
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({

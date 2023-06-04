@@ -1,23 +1,23 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:ecommerce_application/views/login/cubit/login_cubit.dart';
-import 'package:ecommerce_application/views/login/cubit/login_states.dart';
+import 'package:ecommerce_application/views/login/cubit.dart';
+import 'package:ecommerce_application/views/login/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../widgets/app_loading_button.dart';
+import '../../widgets/app_loading_button.dart';
 
 //import 'package:fluttertoast/fluttertoast.dart';
 
-import '../../constants.dart' as constants;
+//import '../../constants.dart' as constants;
 import '../../constants.dart';
 import '../../core/functions/navigation.dart';
-import '../../core/functions/showSnacBar.dart';
+//import '../../core/functions/showSnacBar.dart';
 import '../../core/functions/validator.dart';
-import '../../core/utils/casheData/casheData.dart';
-import '../../core/utils/routes.dart';
-import '../widgets/app_button.dart';
-import '../widgets/social_media_button.dart';
-import '../widgets/app_text_form_field.dart';
-import '../widgets/app_text.dart';
+//import '../../core/utils/casheData/casheData.dart';
+import '../../core/router/routes.dart';
+import '../../widgets/app_button.dart';
+import '../../widgets/social_media_button.dart';
+import '../../widgets/app_text_form_field.dart';
+import '../../widgets/app_text.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -29,20 +29,22 @@ class LoginPage extends StatelessWidget {
     final height = getHeight(context);
 
     return BlocProvider(
-      create: (BuildContext context) => LoginCubit(),
-      child: BlocConsumer<LoginCubit, LoginStates>(
-        listener: (context, state) {
-          if (state is LoginSuccessState) {
-            if (state.user.status) {
-              CasheData.setData(key: 'token', value: state.user.data!.token);
+      create: (context) => LoginCubit(),
+      child: Builder(
+        // listener: (context, state) {
+        //   if (state is LoginSuccessState) {
+        //     if (state.user.status) {
+        //       CasheData.setData(key: 'token', value: state.user.data!.token);
 
-              Navigation.pushAndRemove(context, AppRoutes.homePageRoute);
-            } else {
-              showSnacBar(context, state.user.message, constants.error);
-            }
-          }
-        },
-        builder: (context, state) {
+        //       //Navigation.pushAndRemove(context, AppRoutes.homePageRoute);
+        //       Navigator.of(context).pushNamed(AppRoutes.homePageRoute);
+        //     } else {
+        //       showSnacBar2(context, state.user.message, constants.error);
+        //     }
+        //   }
+        // },
+        builder: (context) {
+          final cubit = LoginCubit.of(context);
           return Scaffold(
             appBar: AppBar(
               leading: IconButton(
@@ -60,7 +62,7 @@ class LoginPage extends StatelessWidget {
                     vertical: height * .0418, horizontal: 14.0),
                 child: SingleChildScrollView(
                   child: Form(
-                    key: formKey,
+                    key: cubit.formKey,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -73,8 +75,10 @@ class LoginPage extends StatelessWidget {
                           height: 73,
                         ),
                         CustomTextFormField(
-                            controller: emailController,
                             hintText: 'Email',
+                            onSave: (data) {
+                              cubit.email = data;
+                            },
                             validator: (value) {
                               return Validator.validateEmail(value);
                             }),
@@ -82,8 +86,10 @@ class LoginPage extends StatelessWidget {
                           height: 8,
                         ),
                         CustomTextFormField(
-                            controller: passwordController,
                             hintText: 'Password',
+                            onSave: (data) {
+                              cubit.password = data;
+                            },
                             validator: (value) {
                               return Validator.validatePassword(value);
                             }),
@@ -105,26 +111,20 @@ class LoginPage extends StatelessWidget {
                         SizedBox(
                           height: height * .03448,
                         ),
-                        ConditionalBuilder(
-                          condition: state is! LoginLoadingState,
-                          builder: (context) => CustomButton(
-                            title: 'LOGIN',
-                            onTap: () {
-                              if (formKey.currentState!.validate()) {
-                                try {
-                                  formKey.currentState!.save();
-                                  BlocProvider.of<LoginCubit>(context)
-                                      .userLogin(
-                                          email: emailController.text,
-                                          password: passwordController.text);
-                                } catch (e) {
-                                  debugPrint(e.toString());
-                                }
-                              }
-                            },
-                          ),
-                          fallback: (context) => const AppLoadingButton(),
-                        ),
+                        BlocBuilder(
+                            bloc: cubit,
+                            builder: (context, state) {
+                              return ConditionalBuilder(
+                                condition: state is! LoginLoadingState,
+                                builder: (context) => CustomButton(
+                                  title: 'LOGIN',
+                                  onTap: () {
+                                    cubit.login();
+                                  },
+                                ),
+                                fallback: (context) => const AppLoadingButton(),
+                              );
+                            }),
                         SizedBox(
                           height: height * .2339,
                         ),

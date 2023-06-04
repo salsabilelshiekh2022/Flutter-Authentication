@@ -1,4 +1,4 @@
-import 'package:ecommerce_application/core/utils/routes.dart';
+import 'package:ecommerce_application/core/router/routes.dart';
 import 'package:ecommerce_application/views/forget_password/view.dart';
 import 'package:ecommerce_application/views/home/view.dart';
 import 'package:ecommerce_application/views/login/view.dart';
@@ -12,7 +12,7 @@ Route<dynamic> onGenerate(RouteSettings settings) {
           builder: (_) => LoginPage(), settings: settings);
     case AppRoutes.registerPageRoute:
       return CupertinoPageRoute(
-          builder: (_) => RegisterPage(), settings: settings);
+          builder: (_) => const RegisterPage(), settings: settings);
     case AppRoutes.forgetPasswordRoute:
       return CupertinoPageRoute(
           builder: (_) => ForgetPasswordPage(), settings: settings);
